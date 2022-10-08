@@ -16,3 +16,5 @@ def scrape(link):
                     links.append(link['href'])
 
     return links
+
+// TODO return link with country code
