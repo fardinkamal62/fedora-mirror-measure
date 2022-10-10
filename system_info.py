@@ -4,14 +4,14 @@ import subprocess
 
 def hostnamectl(x):
     # command to execute
-    try:
         cmd = f"hostnamectl | grep '{x}'"
-    except:
-        print("\033[34m\'hostnamectl\'\033[31m command not found. It is possible that you do not have it installed or you are not using a Linux distribution right now.\033[0m")
-        exit()
 
     # storing the stdout
-    temp = subprocess.Popen([cmd], shell=True, universal_newlines=True, stdout=subprocess.PIPE)
+   try:
+       temp = subprocess.Popen([cmd], shell=True, universal_newlines=True, stdout=subprocess.PIPE)
+   except:
+       print("\033[34m\'hostnamectl\'\033[31m command not found. It is possible that you do not have it installed or you are not using a Linux distribution right now.\033[0m")
+       exit()
 
     # get the output as a string
     output = str(temp.communicate()[0]).strip()

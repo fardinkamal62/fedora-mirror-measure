@@ -1,8 +1,11 @@
-import io
-import requests
-import sys
-import time
-import os
+try:
+    import io
+    import requests
+    import sys
+    import time
+    import os
+except ImportError:
+    print("Need to install module \'requests\'")
 
 
 def speed_test(links, ostm, archi):
@@ -10,7 +13,6 @@ def speed_test(links, ostm, archi):
     print(f"Mirror found {len(links)}")
     for link in links:
         url = f"{link}/releases/{ostm}/Everything/{archi}/os/images/efiboot.img"
-
         with io.BytesIO() as f:
             start = time.perf_counter()  # starting time
             r = requests.get(url, stream=True)  # making requestL
