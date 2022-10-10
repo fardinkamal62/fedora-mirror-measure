@@ -4,7 +4,11 @@ import subprocess
 
 def hostnamectl(x):
     # command to execute
-    cmd = f"hostnamectl | grep '{x}'"
+    try:
+        cmd = f"hostnamectl | grep '{x}'"
+    except:
+        print("\033[34m\'hostnamectl\'\033[31m command not found. It is possible that you do not have it installed or you are not using a Linux distribution right now.\033[0m")
+        exit()
 
     # storing the stdout
     temp = subprocess.Popen([cmd], shell=True, universal_newlines=True, stdout=subprocess.PIPE)
@@ -22,6 +26,10 @@ def architecture():
 
 
 def os():
-    os = hostnamectl('Operating System')
-    result = re.findall("\d+", os)[0]
+    try:
+        os = hostnamectl('Operating System')
+        result = re.findall("\d+", os)[0]
+    except IndexError:
+        print("\033[31mSorry, could not find your distribution's version information.\033[0m")
+        exit()
     return int(result)  # result = 36 // int
