@@ -1,9 +1,10 @@
 try:
     import requests
     from bs4 import BeautifulSoup, SoupStrainer
+    from TermColors import color
     import re
 except ImportError:
-    print("Need to install module 'bs4' and 'requests'")
+    print(color("Need to install module 'bs4' and 'requests'", 1, 9))
 
 def scrape(link):
     links = []
