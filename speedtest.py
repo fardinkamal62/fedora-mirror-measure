@@ -1,3 +1,4 @@
+# Responsible for testing speed
 import io
 import requests
 import sys
@@ -7,7 +8,8 @@ import os
 
 def speed_test(links, ostm, archi):
     os.system('clear')
-    print(f"Mirror found {len(links)}")
+    print(f"{len(links)} Mirrors found")
+    print('\nStarting speedtest...')
     for link in links:
         url = f"{link}/releases/{ostm}/Everything/{archi}/os/images/efiboot.img"
 

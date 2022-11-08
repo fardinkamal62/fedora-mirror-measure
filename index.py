@@ -16,9 +16,8 @@ print(f"Found Operating System: Fedora {os}")
 print(f"Found Architecture: {archi}\n")
 print("Getting mirror list....\n")
 
-mirrors = scrape.scrape(f"https://admin.fedoraproject.org/mirrormanager/mirrors/Fedora/{os}/{archi}")
+mirrors = scrape.mirror(f"https://admin.fedoraproject.org/mirrormanager/mirrors/Fedora/{os}/{archi}")
 
-print('Mirrors fetched\nStarting speedtest...')
 time.sleep(3)
 
-speedtest.speed_test(mirrors, os, archi)
+# speedtest.speed_test(mirrors, os, archi)

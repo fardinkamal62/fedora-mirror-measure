@@ -1,3 +1,4 @@
+# Responsible for getting system information
 import re
 import subprocess
 
