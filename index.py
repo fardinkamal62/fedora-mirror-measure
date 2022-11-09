@@ -18,6 +18,4 @@ print("Getting mirror list....\n")
 
 mirrors = scrape.mirror(f"https://admin.fedoraproject.org/mirrormanager/mirrors/Fedora/{os}/{archi}")
 
-time.sleep(3)
-
-# speedtest.speed_test(mirrors, os, archi)
+speedtest.speed_test(mirrors, os, archi)
