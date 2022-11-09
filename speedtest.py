@@ -54,8 +54,3 @@ def speed_test(links, ostm, archi):
             print('\n')
             if speed == 0.0:
                 filtered_links.append(f"{link}/linux")
-                # print(f"\n{link} Unreachable\n")
-
-
-# speed_test({'AT': ['https://mirror.alwyzon.net/fedora', 'http://mirror.im.jku.at/mirror/fedora/linux',
-#                    'https://mirror.im.jku.at/mirror/fedora/linux']}, 36, 'x84_64')
