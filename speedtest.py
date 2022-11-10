@@ -18,10 +18,15 @@ def speed_test(links, ostm, archi):
         for i in range(len(country_code)):
             print(
                 f"{i + 1}: {code_to_country(country_code[i])}({len(links[country_code[i]])} {'mirrors' if len(links[country_code[i]]) > 1 else 'mirror'})")
+        print("all: for test all mirror")
         country_code_number = input("\nEnter number separated by comma(enter q to quit): ")
-        country_code_number = list(country_code_number.split(','))
-        if country_code_number[0] == 'q':
-            break
+        if country_code_number == 'q' or country_code_number == 'Q':
+            print("Bye Bye")
+            return None
+        if country_code_number == 'all':
+            country_code_number = list(range(len(country_code)))
+        else:
+            country_code_number = list(country_code_number.split(','))
         if len(country_code_number) == 0:
             continue
         break
@@ -47,8 +52,8 @@ def speed_test(links, ostm, archi):
                         f.write(chunk)
                         done = int(30 * dl / int(total_length))
                         sys.stdout.write(
-                            f"\r{link} [%s%s] %s Mbps" % (
-                                '=' * done, ' ' * (30 - done), dl // (time.perf_counter() - start) / 100000))
+                            f"\r{link} [%s%s] %s Kbps" % (
+                                '=' * done, ' ' * (30 - done), dl // (time.perf_counter() - start) / 1000))
 
             speed = dl // (time.perf_counter() - start) / 100000
             print('\n')

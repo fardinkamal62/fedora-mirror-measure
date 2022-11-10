@@ -3,6 +3,16 @@ import re
 import subprocess
 
 
+def sys_info():
+    version = input("Enter Fedora version(Leave blank for auto select): ")
+    archi = input("Enter architecture(aarch64, armhfp, ppc64le, s390x, x86_64)(Leave blank for auto select): ")
+    if version == '':
+        version = os()
+    if archi == '':
+        archi = architecture()
+    return {'version': version, 'architecture': archi}
+
+
 def hostnamectl(x):
     # command to execute
     cmd = f"hostnamectl | grep '{x}'"
@@ -24,5 +34,8 @@ def architecture():
 
 def os():
     os = hostnamectl('Operating System')
+    if re.search(r"^Fedora [1-9]+", os):
+        print("Fedora Linux not found")
+        return None
     result = re.findall("\d+", os)[0]
     return int(result)  # result = 36 // int
