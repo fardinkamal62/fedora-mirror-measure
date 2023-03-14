@@ -8,36 +8,51 @@ import pycountry
 
 
 def code_to_country(code):
-    return pycountry.countries.get(alpha_2=code).name
+    country = pycountry.countries.get(alpha_2=code)
+    return f"{country.name}"
+    # return f"{country.name} {country.flag}"
+
+
+# Checking if Fedora version is pre-release or stable
+def ping(ostm, archi):
+    template = f"{ostm}/Everything/{archi}/os/images/efiboot.img"
+    pre_release_url = f'https://ap.edge.kernel.org/fedora/development/{template}'
+
+    r = requests.head(pre_release_url, allow_redirects=True)
+
+    if r.status_code == 200:
+        return 'development'
+    return 'releases'
 
 
 def speed_test(links, ostm, archi):
+    version = ping(ostm, archi)
     while True:
         os.system('clear')
         country_code = list(links.keys())
         for i in range(len(country_code)):
-            print(
-                f"{i + 1}: {code_to_country(country_code[i])}({len(links[country_code[i]])} {'mirrors' if len(links[country_code[i]]) > 1 else 'mirror'})")
-        print("all: for test all mirror")
+            print(f"{i + 1}: {code_to_country(country_code[i])}({len(links[country_code[i]])} {'mirrors' if len(links[country_code[i]]) > 1 else 'mirror'})")
+
+        print("Leave blank: to test all mirrors")
         country_code_number = input("\nEnter number separated by comma(enter q to quit): ")
+
         if country_code_number == 'q' or country_code_number == 'Q':
             print("Bye Bye")
             return None
-        if country_code_number == 'all':
+        if country_code_number == '':
             country_code_number = list(range(len(country_code)))
         else:
             country_code_number = list(country_code_number.split(','))
         if len(country_code_number) == 0:
             continue
         break
+
     print('\nStarting speedtest...\n')
     for ccn in country_code_number:
-        print('\n')
-        print(
-            f"\nChecking {code_to_country(country_code[int(ccn) - 1])} mirrors: {links[country_code[int(ccn) - 1]]}\n")
+        print(f"\nChecking {code_to_country(country_code[int(ccn) - 1])} mirrors: {links[country_code[int(ccn) - 1]]}\n")
         filtered_links = links[country_code[int(ccn) - 1]]
         for link in filtered_links:
-            url = f"{link}/releases/{ostm}/Everything/{archi}/os/images/efiboot.img"
+            url = f"{link}/{version}/{ostm}/Everything/{archi}/os/images/efiboot.img"
 
             with io.BytesIO() as f:
                 start = time.perf_counter()  # starting time

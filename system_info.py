@@ -33,9 +33,9 @@ def architecture():
 
 
 def os():
-    os = hostnamectl('Operating System')
-    if re.search(r"^Fedora [1-9]+", os):
+    operating_system = hostnamectl('Operating System')
+    if re.search(r"^Fedora [1-9]+", operating_system):
         print("Fedora Linux not found")
         return None
-    result = re.findall("\d+", os)[0]
+    result = re.findall("\d+", operating_system)[0]
     return int(result)  # result = 36 // int
