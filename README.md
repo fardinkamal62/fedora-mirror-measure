@@ -3,7 +3,7 @@
   <h1><a href="https://github.com/fardinkamal62/fedora-mirror-measure">Fedora MiMe</a></h1>
 <!-- Short description: -->
   <h3>A Python script to measure Fedora mirror speed</h3>
-    <h6>version: 2.1.0</h6>
+    <h6>version: 2.2.0</h6>
 </div>
 
 <br>
@@ -37,6 +37,14 @@ After using MiMe I get around **2 Mbps!**
 ## Changelog
 
 ---
+### 2.2.0:
+- Fixed: download if file is not present 
+- Added: shows best mirror
+- Autoselect Fedora 36 if run on distro other than Fedora
+
+**Known Issues**
+- Flags not rendering `speedtest.py:13:5`
+
 ### 2.1.0:
 - Added support for Pre-Release
 - Speedtest all the servers without typing **all**

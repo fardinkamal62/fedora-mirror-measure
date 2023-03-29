@@ -5,7 +5,7 @@ import scrape
 import speedtest
 
 name = "Fedora MiMe"
-version = '2.1.0'
+version = '2.2.0'
 
 os.system('clear')
 print(f"{name}")

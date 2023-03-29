@@ -14,6 +14,8 @@ dependent files, displaying brand name & version
 
 **system_info.py** fetches system info such as Fedora version & architecture by 
 running the command `hostnamectl` with `grep` and gives the data back to **index.py**
+- If the system is not Fedora, it will autoselect Fedora 36
+  - If the system is Fedora but version not specified, it will fetch the version from `hostnamectl` command 
 
 **scrape.py** used for scraping mirror list from Fedora mirror manager using `beautifulsoup4`. After fetching system info **index.py** calls this file 
 1. From Fedora version & architecture it fetches HTML of mirror manager e.g. `https://admin.fedoraproject.org/mirrormanager/mirrors/Fedora/38/x86_64`
