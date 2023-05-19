@@ -1,31 +1,69 @@
-# Hello humble learner👋
- Let me tell you how I made this script.
+<div style="text-align: center; margin-top: 5%">
+<img  src="./assets/mime-banner.png" style="width: 40%; height: auto; align-self: center" alt="banner">
 
-### Flow of the script:
+#### Learn how MiMe works
+</div>
 
-**index.py** -> **system_info.py** -> **scrape.py** -> **speedtest.py**
+## Pre-requisites
+
+---
+
+- Basic knowledge of HTML, CSS, JavaScript, JQuery
+- Basic knowledge of Node.js & npm
+- Ability to use Google & ChatGPT
+
+## File Identification
+
+---
+
+``` electron.js ``` - Main file that runs the Electron app
+
+``` index.html ``` - Main HTML file
+
+``` renderer.js ``` - Main frontend JS file
+
+``` index.css ``` - Main CSS file
+
+``` preload.js ``` - Preload file for Electron app (that connects the main and renderer process AKA frontend and Electron)
+
+``` package.json ``` - Package file for Electron app
+
+``` assets ``` - Folder containing all assets (logo, banner, etc.)
 
 
-### Description of the files
+## Process Flow
 
+---
 
-**index.py** is the entrypoint. Here I'm importing all the
-dependent files, displaying brand name & version
+- Electron app starts. ``` electron.js ``` runs
+- ``` index.html ``` is loaded along with ``` index.css ``` and ``` renderer.js ```
+- ``` index.html ``` fetches Bootstrap, JQuery libraries from CDN
+- ``` renderer.js ``` starts event listeners for buttons
 
-**system_info.py** fetches system info such as Fedora version & architecture by 
-running the command `hostnamectl` with `grep` and gives the data back to **index.py**
-- If the system is not Fedora, it will autoselect Fedora 36
-  - If the system is Fedora but version not specified, it will fetch the version from `hostnamectl` command 
+If clicked on auto select configuration:
 
-**scrape.py** used for scraping mirror list from Fedora mirror manager using `beautifulsoup4`. After fetching system info **index.py** calls this file 
-1. From Fedora version & architecture it fetches HTML of mirror manager e.g. `https://admin.fedoraproject.org/mirrormanager/mirrors/Fedora/38/x86_64`
-2. From that it filters out all the `<td>` as they contain country name & mirror address
-3. From them it traverse through all of them
-   - If it finds two capital letters e.g. `AU`, it saves in a variable
-     - If it finds URL: filters for Fedora mirrors & removes Fedora EPEL & others
-   - Saves filtered urls into dictionary with country code as key e.g. `{AU:[mirror1_URL, mirror2_URL]}`
-4. After all the country is fetched, sends the data back to **index.py**
+- ``` renderer.js ``` runs a function ``` sysinfo.arch() ``` to get architecture information
+- `sysinfo.version()` is run to get Fedora version
+- Both of them relies on Node.js ``` os ``` module
 
-**speedtest.py** file responsible for measuring speed of each mirror by downloading a small file
-1. First it checks if the version is `development` or `release` version with a simple `request` script. According to that it downloads different files
-2. After that from the mirror list it downloads `efiboot.img` file from each of the mirrors and displays the download speed.
+When desired Fedora version & architecture is selected:
+
+- Then ``` renderer.js ``` calls `mirrorInfo.get()` to get the mirror list
+- ``` renderer.js ``` displays the mirror list in the frontend
+
+When speedtest is clicked:
+
+- ``` renderer.js ``` calls `speedtest.checkRelease()` to check if Fedora version is `released` or `development`
+- Then `renderer.js` passes all necessary data such as `mirror list`, `architecture`, `Fedora version` to `speedtest.main()` one by one
+- And `speedtest.main()` returns the speedtest result
+
+Stop button:
+
+- When stop button is clicked, `speedtest.stop()` is called and it stops the speedtest
+- `speedtest.stop()` sends a flag to `speedtest.main()` to stop the JS `fetch` API call
+- In the `renderer.js` also a flag is set where `speedtest.main()` is calling to stop the speedtest
+
+Lastly, when app closes:
+
+- Speedtest cache is cleared
+- In `electron.js` on `before-quit` event, it clears cache

@@ -128,5 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# .idea folder of Jetbrains IDEs
+# IDEA
 .idea/
+
+# node modules
+./node_modules
