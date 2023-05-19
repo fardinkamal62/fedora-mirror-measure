@@ -1,4 +1,4 @@
-<div style="text-align: center; margin-top: 5%">
+<div align="center">
 <img  src="./assets/mime-banner.png" style="width: 40%; height: auto; align-self: center" alt="banner">
 
 #### Learn how MiMe works
