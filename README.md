@@ -1,42 +1,77 @@
-<div align="center">
-<!-- Title: -->
-  <h1><a href="https://github.com/fardinkamal62/fedora-mirror-measure">Fedora MiMe</a></h1>
-<!-- Short description: -->
-  <h3>A Python script to measure Fedora mirror speed</h3>
-    <h6>version: 2.1.0</h6>
+<div style="text-align: center; margin-top: 5%">
+<img  src="./assets/mime-banner.png" style="width: 40%; height: auto; align-self: center" alt="banner">
+
+#### Mirror Measure app for Fedora Linux
+###### v3.0.0
 </div>
 
-<br>
-
-I love Fedora. My only complain was slow mirror speed.  
-
-Ubuntu has **Software Center**, Arch has **Reflector** but Fedora didn't have anything. Until now...  
-
-Introducing **Fedora MiMe**, a Python script to measure Fedora mirror speed
+<img src="https://fardinkamal62.github.io/assets/ss-1.png" alt="screenshot"/>
+<img src="https://fardinkamal62.github.io/assets/ss-2.png" alt="screenshot"/>
+<img src="https://fardinkamal62.github.io/assets/ss-3.png" alt="screenshot"/>
 
 
-## Why not fastestmirror=1?
+## About
+
+---
+A simple Electron app that will help you find Fedora mirrors & run speedtest
+
+## Features
 
 ---
 
-> fastestmirror is based on a faulty concept, when it's turned on your dnf pings all the servers in the list it has and takes the fastest ping time as the "fastestmirror" and it goes to that one as the server
+- Fetch mirror from provided Fedora version & architecture
+- Speedtest
+- Store mirror data offline
+- Mirrors by country
+- Selecting all mirrors or individual mirrors
+- Night mode :3
 
-Source: https://forums.fedoraforum.org/showthread.php?328191-Enable-Fastest-Mirror
-
-In my personal experience used to get speed around **500 Kbps** with fastestmirror enabled.  
-After using MiMe I get around **2 Mbps!**  
-
-## Getting Started
+## Tech Stack
 
 ---
 
-**Install packages**: `pip3 install -r requirements.txt`  
+- Electron
+- HTML & CSS
 
-**Run MiMe**: `python3 index.py`
+## Installation
+
+---
+
+- Clone the repo
+- Run `npm install` to install necessary dependencies
+- Run `npm run electron:run` to run the Electron app
+- To build: run `npm run build:linux` or `npm run build:windows` for Linux and Windows respectively
+
+
+## About the old version
+
+---
+
+It'll be here forever on `legacy` branch. I love what I did. It was my first opensource contribution. I'm very proud of me that I was able to do it.
+
+I'll still support it but I won't be adding any new features.
+
+
 
 ## Changelog
 
 ---
+### 3.0.0:
+- Added GUI 🎉
+
+
+**Fixes**
+- All the previous know issues are resolved
+
+
+### 2.2.0:
+- Fixed: download if file is not present
+- Added: shows best mirror
+- Autoselect Fedora 36 if run on distro other than Fedora
+
+**Known Issues**
+- Flags not rendering `speedtest.py:13:5`
+
 ### 2.1.0:
 - Added support for Pre-Release
 - Speedtest all the servers without typing **all**

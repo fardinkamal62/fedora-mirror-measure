@@ -1,0 +1,70 @@
+body {
+  font-family: Open sans;
+  font-weight: 300;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@font-face {
+  font-family: Open sans;
+  src: url('./assets/open-sans/OpenSans-Regular.ttf');
+}
+
+.btn-primary {
+  --bs-btn-bg: #51a2da;
+  --bs-btn-border-color: #51a2da;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+input::placeholder {
+  font-family: Open sans;
+  font-style: regular;
+  font-weight: 300;
+  text-align: center;
+}
+
+input {
+  text-align: center;
+}
+
+#banner {
+  width: 25%;
+  height: auto;
+}
+
+.loader {
+  border: 5px solid #f3f3f3; /* Light grey */
+  border-top: 5px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
