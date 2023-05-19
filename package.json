@@ -7,12 +7,12 @@
   "dependencies": {
     "electron-reloader": "^1.2.3",
     "jssoup": "^0.0.15",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "node-html-parser": "^6.1.5"
   },
   "devDependencies": {
     "electron": "^24.2.0",
-    "electron-builder": "^23.6.0"
+    "electron-builder": "^24.4.0"
   },
   "scripts": {
     "electron:run": "electron .",
