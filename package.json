@@ -11,8 +11,8 @@
     "node-html-parser": "^6.1.5"
   },
   "devDependencies": {
-    "electron": "^24.2.0",
-    "electron-builder": "^23.6.0"
+    "electron": "^39.2.4",
+    "electron-builder": "^26.0.12"
   },
   "scripts": {
     "electron:run": "electron .",
