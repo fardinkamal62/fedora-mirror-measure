@@ -32,6 +32,13 @@ const createWindow = () => {
     });
 
     win.loadFile("index.html");
+
+    win.webContents.on('before-input-event', (event, input) => {
+        if (input.control && input.shift && input.key.toLowerCase() === 'i') {
+            win.webContents.toggleDevTools();
+            event.preventDefault();
+        }
+    });
 };
 
 app.whenReady().then(() => {
