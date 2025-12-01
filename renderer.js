@@ -104,7 +104,7 @@ const showMirrors = async () => {
         try {
             let mirrorList;
             const mirrors = await store.fetch();
-            if (Object.keys(mirrors.mirrors).length === 0 || timeDifference(mirrors.info.downloadedAt) > 72 || parseInt(mirrors.info.version) !== parseInt(fedoraVersion) || mirrors.info.archi !== archi) {
+            if (Object.keys(mirrors?.mirrors || {}).length === 0 || timeDifference(mirrors?.info?.downloadedAt) > 72 || parseInt(mirrors?.info?.version) !== parseInt(fedoraVersion) || mirrors?.info?.archi !== archi) {
                 mirrorList = await mirrorInfo.get(fedoraVersion, archi);
                 await store.store(mirrorList, fedoraVersion, archi);
                 await renderMirrors(mirrorList);

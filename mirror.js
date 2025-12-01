@@ -13,8 +13,8 @@ let mirrors = {};
 
 index.getMirrors = async (version, archi) => {
   const site = await fetch(
-    `https://admin.fedoraproject.org/mirrormanager/mirrors/Fedora/${version}/${archi}`
-  );
+    `https://mirrormanager.fedoraproject.org/mirrors/Fedora/${version}/${archi}?page_size=20000&page_number=1`
+  )
   const html = await site.text();
   let countryCode = "";
   const parsed = parse(html);

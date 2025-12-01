@@ -56,6 +56,11 @@ I'll still support it but I won't be adding any new features.
 ## Changelog
 
 ---
+
+### 3.0.1:
+- Fixed: changed mirrorlist source to mirrormanager.fedoraproject.org
+
+
 ### 3.0.0:
 - Added GUI 🎉
 
