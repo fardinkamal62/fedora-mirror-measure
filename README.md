@@ -2,7 +2,7 @@
 <img  src="./assets/mime-banner.png" style="width: 40%; height: auto; align-self: center" alt="banner">
 
 #### Mirror Measure app for Fedora Linux
-###### v3.0.0
+###### v3.0.1
 </div>
 
 <img src="https://fardinkamal62.github.io/assets/ss-1.png" alt="screenshot"/>
