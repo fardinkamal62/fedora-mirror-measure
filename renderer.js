@@ -44,15 +44,34 @@ $("#version").on("input", () => {
 });
 //
 
-// Event listener for night mode
-$("#night_mode").on("change", (e) => {
-    const checked = e.target.checked;
-    if (checked) {
-        $('body').css({'color': 'white', 'background-color': 'black'})
+// Function to apply night mode
+const applyNightMode = (isNightMode) => {
+    if (isNightMode) {
+        $('body').css({'color': 'white', 'background-color': 'black'});
+        $('#night_mode').prop('checked', true);
     } else {
-        $('body').css({'color': 'black', 'background-color': 'white'})
+        $('body').css({'color': 'black', 'background-color': 'white'});
+        $('#night_mode').prop('checked', false);
     }
-})
+};
+
+// Auto-detect system theme preference on page load
+if (window.matchMedia) {
+    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    // Apply initial theme based on system preference
+    applyNightMode(prefersDarkMode.matches);
+    
+    // Listen for changes in system theme
+    prefersDarkMode.addEventListener('change', (e) => {
+        applyNightMode(e.matches);
+    });
+}
+
+// Event listener for manual night mode toggle
+$("#night_mode").on("change", (e) => {
+    applyNightMode(e.target.checked);
+});
 
 //
 
@@ -154,10 +173,15 @@ const renderMirrors = (mirrors) => {
     <div id="${key}" class="accordion-collapse collapse" aria-labelledby="headingOne"
         data-bs-parent="#accordionExample">
         <div class="accordion-body">
+        <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input country-select-all" id="select-all-${key}" data-country="${key}">
+            <label for="select-all-${key}" class="form-check-label"><strong>Select All ${regionNames.of(key)}</strong></label>
+        </div>
+        <hr>
         ${mirrors[key]
                     .map((mirror) => {
                         return `<div class="form-check">
-          <input class="form-check-input" name="mirror" type="checkbox" value="${mirror}" id="${mirror}">
+          <input class="form-check-input country-mirror" name="mirror" type="checkbox" value="${mirror}" id="${mirror}" data-country="${key}">
           <label class="form-check-label" for="${mirror}">
               ${mirror}
           </label>
@@ -170,6 +194,23 @@ const renderMirrors = (mirrors) => {
         `
             )
             .removeClass("d-none");
+    });
+    
+    // Add event listeners for country-specific select all checkboxes
+    $(".country-select-all").on("change", function() {
+        const country = $(this).data("country");
+        const isChecked = $(this).prop("checked");
+        $(`.country-mirror[data-country="${country}"]`)
+            .prop("checked", isChecked)
+            .trigger("change");
+    });
+    
+    // Update country select-all checkbox when individual mirrors are toggled
+    $(".country-mirror").on("change", function() {
+        const country = $(this).data("country");
+        const totalMirrors = $(`.country-mirror[data-country="${country}"]`).length;
+        const checkedMirrors = $(`.country-mirror[data-country="${country}"]:checked`).length;
+        $(`#select-all-${country}`).prop("checked", totalMirrors === checkedMirrors);
     });
     $(".loader").remove();
     $(".operation-button").removeClass("d-none");
@@ -201,6 +242,7 @@ const removeEventListeners = () => {
     $("input[name='architecture']").off("change").attr("disabled", true);
     $("#version").off("input").attr("disabled", true);
     $("#select_all").off("change");
+    $(".country-select-all").off("change").attr("disabled", true);
     $("input[name='mirror']").off("change").attr("disabled", true);
 };
 
