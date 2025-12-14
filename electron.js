@@ -17,9 +17,17 @@ let win;
 let ses;
 
 const createWindow = () => {
+    const { screen } = require('electron');
+    const primaryDisplay = screen.getPrimaryDisplay();
+    const { width, height } = primaryDisplay.workAreaSize;
+    
+    // Use 80% of screen width and height, with min/max constraints
+    const windowWidth = Math.min(Math.max(Math.floor(width * 0.8), 1000), 1600);
+    const windowHeight = Math.min(Math.max(Math.floor(height * 0.8), 600), 1000);
+    
     win = new BrowserWindow({
-        width: 1000,
-        height: 600,
+        width: windowWidth,
+        height: windowHeight,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: true,

@@ -57,6 +57,10 @@ I'll still support it but I won't be adding any new features.
 
 ---
 
+### 3.1.1:
+
+- Fixed: set window size based on screen size
+
 ### 3.1.0:
 
 - Feature: added sorting by distance
