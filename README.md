@@ -2,12 +2,14 @@
 <img  src="./assets/mime-banner.png" style="width: 40%; height: auto; align-self: center" alt="banner">
 
 #### Mirror Measure app for Fedora Linux
-###### v3.0.1
+###### v3.2.0
 </div>
 
-<img src="https://fardinkamal62.github.io/assets/ss-1.png" alt="screenshot"/>
-<img src="https://fardinkamal62.github.io/assets/ss-2.png" alt="screenshot"/>
-<img src="https://fardinkamal62.github.io/assets/ss-3.png" alt="screenshot"/>
+<img src="https://i.ibb.co.com/93f5q1pQ/ss-1.png" alt="ss 1" border="0" alt="Default view">
+<img src="https://i.ibb.co.com/B2mryC7m/ss-2.png" alt="ss 2" border="0"
+ alt="After selecting version & architecture">
+<img src="https://i.ibb.co.com/Kj6BTJNy/ss-3.png" alt="ss 3" border="0"
+ alt="After selecting mirrors in dark mode">
 
 
 ## About
