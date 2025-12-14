@@ -122,19 +122,19 @@ const menu = [
             {
                 label: 'App Homepage',
                 click: () => {
-                    require('electron').shell.openExternal('https://fardinkamal62.github.io/projects/mime');
+                    require('electron').shell.openExternal('https://fardinkamal62.vercel.app/projects/mime');
                 }
             },
             {
                 label: 'Report Issue',
                 click: () => {
-                    require('electron').shell.openExternal('http://github.com/fardinkamal62/fedora-mirror-measure/issues/');
+                    require('electron').shell.openExternal('https://github.com/fardinkamal62/fedora-mirror-measure/issues/');
                 }
             },
             {
                 label: 'Developer Information',
                 click: () => {
-                    require('electron').shell.openExternal('http://fardinkamal62.github.io')}
+                    require('electron').shell.openExternal('https://fardinkamal62.vercel.app')}
             }
         ]
     }

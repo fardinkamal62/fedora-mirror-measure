@@ -3,7 +3,7 @@
   "version": "3.2.0",
   "description": "Fedora Mirror Measure(MiMe) is a tool to measure Fedora Linux mirror speed",
   "main": "electron.js",
-  "homepage": "https://fardinkamal62.github.io/projects/mime",
+  "homepage": "https://fardinkamal62.vercel.app/projects/mime",
   "dependencies": {
     "electron-reloader": "^1.2.3",
     "jssoup": "^0.0.15",
@@ -46,7 +46,7 @@
   "author": {
     "name": "Fardin Kamal",
     "email": "fardinkamal62@pm.me",
-    "url": "https://fardinkamal62.github.io"
+    "url": "https://fardinkamal62.vercel.app"
   },
   "license": "GPL-3.0"
 }
