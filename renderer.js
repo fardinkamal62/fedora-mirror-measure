@@ -1,3 +1,12 @@
+// Load country coordinates from JSON file
+let countryCoordinates = {};
+fetch('./countryCoordinates.json')
+    .then(response => response.json())
+    .then(data => {
+        countryCoordinates = data;
+    })
+    .catch(error => console.error('Error loading country coordinates:', error));
+
 // Render architecture list
 ["aarch64", "armhfp", "i386", "ppc64le", "s390x", "x86_64"].forEach((arch) => {
     $("#archi-list").append(`
@@ -11,6 +20,77 @@
 
 let versionSelected = false;
 let archiSelected = false;
+let userLocation = null;
+
+// Haversine formula to calculate distance between two coordinates in kilometers
+const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Earth's radius in kilometers
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+};
+
+// Get user location from IP address using multiple fallback services
+const getUserLocationFromIP = async () => {
+    // Try multiple services in order
+    const services = [
+        {
+            name: 'ip-api.com',
+            url: 'http://ip-api.com/json/',
+            parse: (data) => ({
+                lat: data.lat,
+                lon: data.lon,
+                country: data.countryCode
+            })
+        },
+        {
+            name: 'ipapi.co',
+            url: 'https://ipapi.co/json/',
+            parse: (data) => ({
+                lat: data.latitude,
+                lon: data.longitude,
+                country: data.country_code
+            })
+        },
+        {
+            name: 'ipwhois.app',
+            url: 'http://ipwho.is/',
+            parse: (data) => ({
+                lat: data.latitude,
+                lon: data.longitude,
+                country: data.country_code
+            })
+        }
+    ];
+
+    for (const service of services) {
+        try {
+            const response = await fetch(service.url);
+            const data = await response.json();
+            
+            // Check if response is valid
+            if (data && (data.lat || data.latitude)) {
+                const location = service.parse(data);
+                return location;
+            }
+        } catch (error) {
+            console.warn(`${service.name} failed:`, error.message);
+            continue;
+        }
+    }
+    
+    console.error('All geolocation services failed');
+    return null;
+};
+
+// Initialize user location on page load
+(async () => {
+    userLocation = await getUserLocationFromIP();
+})();
 
 // Event listeners
 // Event listener to auto detect Fedora version & architecture
@@ -144,10 +224,24 @@ const regionNames = new Intl.DisplayNames(
 const renderMirrors = (mirrors) => {
     $("#mirrors").empty();
     $("#select_all_div").remove();
+    $("#sort_controls").remove();
+    
+    // Get saved sort preference
+    const savedSort = localStorage.getItem('mirrorSortPreference') || 'name';
+    
     $(`
-  <div class="form-check" id="select_all_div">
-    <input type="checkbox" class="form-check-input" id="select_all" name="Select All" value="Select All">
-    <label for="select_all" class="form-check-label">Select All</label>
+  <div id="sort_controls">
+  <div class="d-flex align-items-center mb-2">
+      <label for="sort_by" class="me-2 mb-0">Sort by:</label>
+      <select class="form-select form-select-sm" id="sort_by" style="width: auto;">
+        <option value="name" ${savedSort === 'name' ? 'selected' : ''}>Country Name</option>
+        <option value="distance" ${savedSort === 'distance' ? 'selected' : ''}>Distance</option>
+      </select>
+    </div>
+    <div class="form-check" id="select_all_div">
+      <input type="checkbox" class="form-check-input" id="select_all" name="Select All" value="Select All">
+      <label for="select_all" class="form-check-label">Select All</label>
+    </div>
   </div>
   `).insertAfter("#select_first");
 
@@ -156,8 +250,34 @@ const renderMirrors = (mirrors) => {
             .prop("checked", $("#select_all").prop("checked"))
             .trigger("change");
     });
+    
+    // Handle sort change
+    $("#sort_by").on("change", async function() {
+        const sortType = $(this).val();
+        localStorage.setItem('mirrorSortPreference', sortType);
+        await renderMirrors(mirrors);
+    });
+    
+    // Sort mirrors based on preference
+    let sortedCountries = Object.keys(mirrors);
+    if (savedSort === 'distance' && userLocation) {
+        sortedCountries = sortedCountries.sort((a, b) => {
+            const coordsA = countryCoordinates[a];
+            const coordsB = countryCoordinates[b];
+            if (!coordsA || !coordsB) return 0;
+            
+            const distA = calculateDistance(userLocation.lat, userLocation.lon, coordsA.lat, coordsA.lon);
+            const distB = calculateDistance(userLocation.lat, userLocation.lon, coordsB.lat, coordsB.lon);
+            return distA - distB;
+        });
+    } else {
+        // Sort alphabetically by country name
+        sortedCountries = sortedCountries.sort((a, b) => {
+            return regionNames.of(a).localeCompare(regionNames.of(b));
+        });
+    }
 
-    Object.keys(mirrors).forEach((key) => {
+    sortedCountries.forEach((key) => {
         $("#mirrors")
             .append(
                 `

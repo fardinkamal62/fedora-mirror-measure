@@ -57,6 +57,10 @@ I'll still support it but I won't be adding any new features.
 
 ---
 
+### 3.1.0:
+
+- Feature: added sorting by distance
+
 ### 3.0.2:
 - Feature: auto-set night mode based on system theme
 - Feature: added select all/deselect all button on country selection
