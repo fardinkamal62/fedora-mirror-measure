@@ -127,10 +127,10 @@ $("#version").on("input", () => {
 // Function to apply night mode
 const applyNightMode = (isNightMode) => {
     if (isNightMode) {
-        $('body').css({'color': 'white', 'background-color': 'black'});
+        $('body').addClass('dark-mode');
         $('#night_mode').prop('checked', true);
     } else {
-        $('body').css({'color': 'black', 'background-color': 'white'});
+        $('body').removeClass('dark-mode');
         $('#night_mode').prop('checked', false);
     }
 };
@@ -233,7 +233,7 @@ const renderMirrors = (mirrors) => {
   <div id="sort_controls">
   <div class="d-flex align-items-center mb-2">
       <label for="sort_by" class="me-2 mb-0">Sort by:</label>
-      <select class="form-select form-select-sm" id="sort_by" style="width: auto;">
+      <select class="form-select form-select-sm" id="sort_by" style="width: 15%;">
         <option value="name" ${savedSort === 'name' ? 'selected' : ''}>Country Name</option>
         <option value="distance" ${savedSort === 'distance' ? 'selected' : ''}>Distance</option>
       </select>
@@ -347,12 +347,27 @@ $("#test-speed").on('click', async () => {
     $('#result').empty();
     $('#selection_area').addClass('d-none');
     removeEventListeners();
+    
+    // Add progress indicator
+    $('#result').prepend(`
+        <div class="text-center mb-4">
+            <h3 class="section-title">Testing Mirrors</h3>
+            <p class="progress-text">Testing ${mirrors.length} mirror(s)...</p>
+        </div>
+    `);
+    
     for (const mirror of mirrors) {
         if (!stop) {
-            renderResult(mirror)
+            renderResult(mirror);
             const r = await speedtest.main(mirror, version, fedoraVersion, archi);
-            $(`#loader-${$.escapeSelector(mirror)}`).remove();
-            $(`#${$.escapeSelector(mirror)}`).append(`<p class="mx-3">${r.speed || 0} Mbps</p>`);
+            const speed = r.speed || 0;
+            const speedClass = getSpeedClass(speed);
+            
+            $(`#loader-${$.escapeSelector(mirror)}`).addClass('d-none');
+            $(`#speed-${$.escapeSelector(mirror)}`)
+                .removeClass('d-none')
+                .addClass(speedClass)
+                .text(`${speed} Mbps`);
         }
     }
 })
@@ -375,29 +390,42 @@ const timeDifference = (downloadedAt) => {
 }
 
 const renderResult = (url) => {
+    const hostname = new URL(url).hostname;
     $('#result').append(`
-    <div class="d-flex flex-row" id="${url}">
-            <button class="bg-black border border-1 btn btn-sm rounded-0 text-white copy" data="${url}">Copy to Clipboard</button>
-            <textarea class="form-control" rows="1" cols="40"
-                      style="resize: none ;border-bottom-left-radius: 0; border-top-left-radius: 0"
-                      spellcheck="false" id="textarea-${url}" disabled>${url}</textarea>
-            <div class="loader text-primary mx-3" style='flex: none' id="loader-${url}" role="status"></div>
-    </div>
-    `)
+        <div class="result-item" id="${url}">
+            <div class="flex-grow-1">
+                <div class="fw-bold mb-1">${hostname}</div>
+                <div class="mirror-url">${url}</div>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <div class="loader" id="loader-${url}"></div>
+                <span class="speed-result d-none" id="speed-${url}">-- Mbps</span>
+                <button class="copy-btn" data="${url}" title="Copy mirror URL">
+                    📋 Copy
+                </button>
+            </div>
+        </div>
+    `);
 }
 
-$('body').on('click', '.copy', function () {
-    const copyText = document.getElementById(`textarea-${$(this).attr('data')}`);
+// Helper function to get speed color class
+const getSpeedClass = (speed) => {
+    if (speed >= 100) return 'speed-fast';
+    if (speed >= 30) return 'speed-medium';
+    return 'speed-slow';
+};
 
-    // Select the text field
-    copyText.select();
-    copyText.setSelectionRange(0, 99999); // For mobile devices
-
-    // Copy the text inside the text field
-    navigator.clipboard.writeText(copyText.value);
-
-    // Alert the copied text
-    alert("Copied url: " + copyText.value);
+$('body').on('click', '.copy-btn', function () {
+    const url = $(this).attr('data');
+    navigator.clipboard.writeText(url).then(() => {
+        const originalText = $(this).text();
+        $(this).text('✓ Copied!');
+        setTimeout(() => {
+            $(this).text(originalText);
+        }, 2000);
+    }).catch(() => {
+        alert("Copied url: " + url);
+    });
 });
 
 $('body').on('click', '#stop', function () {

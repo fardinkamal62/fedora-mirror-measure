@@ -57,6 +57,12 @@ I'll still support it but I won't be adding any new features.
 
 ---
 
+### 3.2.0:
+
+- UI Improvement 🎉
+
+Revamped the entire UI for better user experience
+
 ### 3.1.1:
 
 - Fixed: set window size based on screen size

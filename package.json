@@ -1,6 +1,6 @@
 {
   "name": "fedora-mime",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "description": "Fedora Mirror Measure(MiMe) is a tool to measure Fedora Linux mirror speed",
   "main": "electron.js",
   "homepage": "https://fardinkamal62.github.io/projects/mime",
